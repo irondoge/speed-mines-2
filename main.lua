@@ -31,7 +31,7 @@ function menu_draw()
 
   -----
 
-  love.graphics.print("Press ENTER to start", winW - 200, winH - 25)
+  love.graphics.print(message, winW - (10 * #message), winH - 25)
 end
 
 function menu_cick(x, y, button)
@@ -58,7 +58,7 @@ function menu_enter(key)
       grid[r][c] = 10
     end
   end
-  message = "Click anywhere to start"
+  message = "Press <D> to open a box, <S> to flag it"
 
     -----
 
@@ -96,7 +96,7 @@ function gen_grid(key)
     repeat
       r = math.random(0, gridH - 1)
       c = math.random(0, gridW - 1)
-    until grid[r][c] == 10 and (r < y - 1 or c < x - 1 or r > y + 1 or c > x + 1)
+    until grid[r][c] ~= 19 and (r < y - 1 or c < x - 1 or r > y + 1 or c > x + 1)
     grid[r][c] = 19
     for roff = -1, 1 do
       for coff = -1, 1 do
@@ -104,7 +104,7 @@ function gen_grid(key)
           local rt = r + roff
           local ct = c + coff
           if rt >= 0 and rt < gridH and ct >= 0 and ct < gridW then
-            if grid[rt][ct] < 20 then
+            if grid[rt][ct] < 19 then
               grid[rt][ct] = grid[rt][ct] + 1
             end
           end
@@ -119,7 +119,7 @@ function gen_grid(key)
 end
 
 function open_box(r, c, first)
-  if r < 0 or r >= gridW or c < 0 or c >= gridH then
+  if r < 0 or r >= gridH or c < 0 or c >= gridW then
     return
   end
   local val = grid[r][c]
@@ -139,7 +139,7 @@ function open_box(r, c, first)
         end
       end
     end
-    message = "You lost ! Press enter to restart"
+    message = "You lost ! Press <ENTER> to restart"
     love.keypressed = game_restart
   elseif val > 9 or not first then
     return
@@ -176,6 +176,7 @@ function game_restart(key)
 
     -----
 
+  message = "Press <ENTER> to start"
   love.draw = menu_draw
   love.mousepressed = menu_cick
   love.keypressed = menu_enter
@@ -221,7 +222,7 @@ function game_keypressed(key)
       bombs = bombs - 1
     end
     if bombs == 0 and check_win() then
-      message = "You won ! Press enter to restart"
+      message = "You won ! Press <ENTER> to restart"
       love.keypressed = game_restart
     else
       message = "Bombs left: %d" % bombs
@@ -236,9 +237,9 @@ function game_draw()
   -----
 
   local y = gameY
-  for r = 0, gridW - 1 do
+  for r = 0, gridH - 1 do
     local x = gameX
-    for c = 0, gridH - 1 do
+    for c = 0, gridW - 1 do
       love.graphics.draw(box[grid[r][c]], x, y)
       x = x + 25
     end
@@ -268,6 +269,7 @@ function love.load()
 
   -----
 
+  message = "Press <ENTER> to start"
   love.draw = menu_draw
   love.mousepressed = menu_cick
   love.keypressed = menu_enter
