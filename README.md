@@ -12,12 +12,7 @@ Speed Mines 2
 
 ## Installation
 #### Prerequisities
-Things you need to install the software and how to install them.
-`# example of command to install`
-
-#### Install
-Things you need to do to install the software if needed.
-`# example of command to install`
+See plateform specific [details](https://love2d.org/wiki/Game_Distribution) about LÖVE 2D applications.
 
 ## Usage
 No options are available yet in the current version.
